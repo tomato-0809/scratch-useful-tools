@@ -13,9 +13,7 @@
       }
       label, input[type='checkbox'] {
         cursor: pointer;
-      }
-      label {
-        display: block;
+        display: inline-block;
       }
     </style>
   </head>
@@ -46,16 +44,12 @@
           zip.files["project.json"].async("string").then(function (jsonStr) {
             try {
               const json = JSON.parse(jsonStr);
-              
               spriteSelector.childNodes.forEach(element => element.remove()); // 既存の選択肢をクリア
-              for (const element of json.targets) {
-                console.log(element.name + (element.isStage ? " (非推奨)" : ""));
-                const spriteSelectorElement = document.createElement("label");
-                const spriteSelectorCheckboxElement = document.createElement("input");
-                spriteSelectorCheckboxElement.type = "checkbox";
-                spriteSelectorElement.append(spriteSelectorCheckboxElement, element.name + (element.isStage ? " (非推奨)" : ""));
+              json.targets.forEach((element, index) => {
+                const spriteSelectorElement = document.createElement("div");
+                spriteSelectorElement.innerHTML = `<label><input type="radio" name="spriteSelector" data-index=${index}>${element.name}${element.isStage ? " (非推奨)" : ""}</label>`;
                 spriteSelector.append(spriteSelectorElement);
-              }
+              });
               output.textContent = JSON.stringify(json, null, 2);
             }catch(err){
               output.textContent = "JSONの解析に失敗しました。";
