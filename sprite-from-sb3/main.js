@@ -15,13 +15,14 @@ sb3Input.addEventListener("change", function (e) {
     zip.files["project.json"].async("string").then(function (jsonStr) {
       try {
         const json = JSON.parse(jsonStr);
-        spriteSelector.innerHTML = ""; // 既存の選択肢をクリア
+        spriteSelector.innerHTML = "";
         json.targets.forEach((element, i) => {
           const spriteSelectorElement = document.createElement("div");
           spriteSelectorElement.innerHTML = `<label><input type="radio" name="spriteSelector" data-index="${i}">${htmlEscape(element.name) + (element.isStage ? " (非推奨)" : "")}</label>`;
           spriteSelector.append(spriteSelectorElement);
+          const submit = document.createElement("button"); // 決定ボタンを作れ
         });
-        spriteSelector.childNodes[1].checked = true;
+        spriteSelector.childNodes[1].childNodes[0].childNodes[0].checked = true;
       }catch(err){
         alert("JSONの解析に失敗したんだけど！？変なファイルよこさないでよっ！");
       }
