@@ -1,4 +1,4 @@
-import htmlEscape from "/lib/htmlEscape.js";
+import htmlEscape from "./../lib/htmlEscape.js";
 
 const sb3Input = document.getElementById("sb3Input");
 const spriteSelector = document.getElementById("spriteSelector");
