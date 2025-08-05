@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>sb3ファイルからスプライトを抽出 - Scratcher向けの便利ツール</title>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <style>
+      body {
+        font-family: "Noto Sans JP", sans-serif;
+      }
+      #output {
+        display: none;
+      }
+      label, input[type='checkbox'] {
+        cursor: pointer;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>sb3ファイルからスプライトを抽出</h1>
+    <p>sb3ファイルから、簡単にsprite3ファイルを抽出できます。<br>
+    sb, sb2には非対応です。<br>
+    sb3ファイルからスプライトを抽出する以外の処理は一切行っておりません。</p>
+    <input type="file" id="sb3Input" accept=".sb3" /><br>
+    <div id="spriteSelector"></div>
+    <a href="./">トップページに戻る</a>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
