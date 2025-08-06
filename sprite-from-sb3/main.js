@@ -2,6 +2,7 @@ import htmlEscape from "./../lib/htmlEscape.js";
 
 const sb3Input = document.getElementById("sb3Input");
 const spriteSelector = document.getElementById("spriteSelector");
+const submit = document.querySelector("#submit");
 sb3Input.value = "";
 sb3Input.addEventListener("change", function (e) {
   window.onbeforeunload = e => e.preventDefault();
@@ -25,12 +26,10 @@ sb3Input.addEventListener("change", function (e) {
       }catch(err){
         alert("JSONの解析に失敗したんだけど！？変なファイルよこさないでよっ！");
       }
-      const submit = document.createElement("button"); // 決定ボタンを作れ
-      submit.id = "submit";
-      submit.textContent = "決定";
-      spriteSelector.after(submit);
+      submit.style.display = "block";
     });
   }).catch(function (err){
     alert("sb3の展開に失敗したんだけど！？変なファイルよこさないでよっ！");
   });
 });
+
