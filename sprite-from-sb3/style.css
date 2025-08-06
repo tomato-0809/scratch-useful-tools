@@ -1,0 +1,13 @@
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}
+#output {
+  display: none;
+}
+label, input[type='checkbox'] {
+  cursor: pointer;
+  display: inline-block;
+}
+#submit {
+  display: block;
+}

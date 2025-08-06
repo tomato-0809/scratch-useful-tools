@@ -20,12 +20,15 @@ sb3Input.addEventListener("change", function (e) {
           const spriteSelectorElement = document.createElement("div");
           spriteSelectorElement.innerHTML = `<label><input type="radio" name="spriteSelector" data-index="${i}">${htmlEscape(element.name) + (element.isStage ? " (非推奨)" : "")}</label>`;
           spriteSelector.append(spriteSelectorElement);
-          const submit = document.createElement("button"); // 決定ボタンを作れ
         });
         spriteSelector.childNodes[1].childNodes[0].childNodes[0].checked = true;
       }catch(err){
         alert("JSONの解析に失敗したんだけど！？変なファイルよこさないでよっ！");
       }
+      const submit = document.createElement("button"); // 決定ボタンを作れ
+      submit.id = "submit";
+      submit.textContent = "決定";
+      spriteSelector.after(submit);
     });
   }).catch(function (err){
     alert("sb3の展開に失敗したんだけど！？変なファイルよこさないでよっ！");
