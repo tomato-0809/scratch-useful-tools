@@ -39,6 +39,7 @@ sb3Input.addEventListener("change", function (e) {
 });
 
 submit.addEventListener("click", function () {
+  const file = sb3Input.files[0];
   if (!file) {
     alert("sb3ファイルが選択されていないじゃない！？勝手に選択解除しないでよっ！"); // sb3InputでEventListenerを設定してるので、どう考えてもこんな状況になる前に更新が行われるはず
     return
@@ -49,29 +50,16 @@ submit.addEventListener("click", function () {
     return;
   }
   const index = selectedSprite.dataset.index;
-  const file = sb3Input.files[0];
-    JSZip.loadAsync(file).then(function (zip) {
-    if (!zip.files["project.json"]) {
-      alert("project.jsonが見つからないじゃない！？sb3ファイル以外なんかよこさないでよっ！");
-      return;
-    }
+  JSZip.loadAsync(file).then(function (zip) {
     zip.files["project.json"].async("string").then(function (jsonStr) {
-      try {
-        const json = JSON.parse(jsonStr);
-        spriteSelector.innerHTML = "";
-        json.targets.forEach((element, i) => {
-          const spriteSelectorElement = document.createElement("div");
-          spriteSelectorElement.innerHTML = `<label><input type="radio" name="spriteSelector" data-index="${i}">${htmlEscape(element.name) + (element.isStage ? " (非推奨)" : "")}</label>`;
-          spriteSelector.append(spriteSelectorElement);
-        });
-        spriteSelector.childNodes[1].childNodes[0].childNodes[0].checked = true;
-      }catch(err){
-        alert("JSONの解析に失敗したんだけど！？変なファイルよこさないでよっ！");
+      const sprite = JSON.parse(jsonStr).targets[index];
+      if (sprite.isStage && !confirm("ステージを選択しているようです。Scratchで読み込んだ場合の動作は一切保証されませんが、よろしいですか？")){
+        return;
       }
       submit.style.display = "block";
     });
+    // ここからが本番
   }).catch(function (err){
     alert("sb3の展開に失敗したんだけど！？変なファイルよこさないでよっ！");
   });
-
 });
