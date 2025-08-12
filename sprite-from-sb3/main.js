@@ -60,6 +60,12 @@ submit.addEventListener("click", function () {
       submit.style.display = "block";
     });
     // ここからが本番
+    // 圧縮レベル指定できたら最高じゃないか？
+    const sprite3 = new JSZip();
+    sprite3.file("sprite.json", sprite);
+    // スプライトのアセットをコピーする
+    // 圧縮してダウンロードできるようにする
+    // そのうち「他のスプライトを抽出」ができればいいかも
   }).catch(function (err){
     alert("sb3の展開に失敗したんだけど！？変なファイルよこさないでよっ！");
   });
