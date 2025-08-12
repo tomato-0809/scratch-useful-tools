@@ -22,7 +22,8 @@ sb3Input.addEventListener("change", function (e) {
           spriteSelectorElement.innerHTML = `<label><input type="radio" name="spriteSelector" data-index="${i}">${htmlEscape(element.name) + (element.isStage ? " (非推奨)" : "")}</label>`;
           spriteSelector.append(spriteSelectorElement);
         });
-        spriteSelector.childNodes[1].childNodes[0].childNodes[0].checked = true;
+        const firstSprite = spriteSelector.querySelectorAll("input[type='radio']")[1];
+        if(firstSprite) firstSprite.checked = true;
         window.onbeforeunload = e => e.preventDefault();
         submit.style.display = "block";
       }catch(err){
