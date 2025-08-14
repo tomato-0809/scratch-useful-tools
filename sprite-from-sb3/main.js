@@ -1,4 +1,4 @@
-import htmlEscape from "./../lib/htmlEscape.js";
+import htmlEscape from "../lib/htmlEscape.js";
 
 const sb3Input = document.getElementById("sb3Input");
 const spriteSelector = document.getElementById("spriteSelector");
@@ -51,7 +51,7 @@ submit.addEventListener("click", function () {
     return;
   }
   const index = selectedSprite.dataset.index;
-  JSZip.loadAsync(file).then(function (zip) {
+  JSZip.loadAsync(file).then(async function (zip) {
     zip.files["project.json"].async("string").then(function (jsonStr) {
       const sprite = JSON.parse(jsonStr).targets[index];
       if (sprite.isStage && !confirm("ステージを選択しているようです。Scratchで読み込んだ場合の動作は一切保証されませんが、よろしいですか？")){
@@ -63,6 +63,12 @@ submit.addEventListener("click", function () {
     // 圧縮レベル指定できたら最高じゃないか？
     const sprite3 = new JSZip();
     sprite3.file("sprite.json", sprite);
+    const sprite3Blob = await newZip.generateAsync({type: "blob", compression: "DEFLATE"});
+    // ダウンロードリンク作成
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(sprite3Blob);
+    a.download = "new.zip";
+    a.click();
     // スプライトのアセットをコピーする
     // 圧縮してダウンロードできるようにする
     // そのうち「他のスプライトを抽出」ができればいいかも
