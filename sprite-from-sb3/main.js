@@ -6,9 +6,14 @@ const submit = document.querySelector("#submit");
 const download = document.querySelector("#download");
 
 sb3Input.value = "";
+const a = document.createElement("a");
+const downloadListener = function () {
+  a.click();
+}
 download.addEventListener("click", downloadListener);
 
 sb3Input.addEventListener("change", function(e){
+  if(a.href) URL.revokeObjectURL(a.href); // 先にrevokeしておく
   const file = e.target.files[0];
   if (!file) return;
   JSZip.loadAsync(file).then(function(zip){
@@ -43,12 +48,8 @@ sb3Input.addEventListener("change", function(e){
   });
 });
 
-const a = document.createElement("a");
-const downloadListener = function () {
-  a.click();
-}
-
 submit.addEventListener("click", function(){
+  download.style.display = "none";
   if(a.href) URL.revokeObjectURL(a.href); // 先にrevokeしておく
   const file = sb3Input.files[0];
   if(!file){
@@ -64,15 +65,20 @@ submit.addEventListener("click", function(){
   JSZip.loadAsync(file).then(function(zip){
     zip.files["project.json"].async("string").then(async function(jsonStr){
       const sprite = JSON.parse(jsonStr).targets[index];
-      if (sprite.isStage && !confirm("ステージを選択しているようです。Scratchで読み込んだ場合の動作は一切保証されませんが、よろしいですか？")){
+      if (sprite.isStage && !confirm("ステージが選択されています。Scratchで読み込んだ場合の動作は一切保証されませんが、よろしいですか？")){
         return;
       }
       const sprite3 = new JSZip();
       sprite3.file("sprite.json", JSON.stringify(sprite));
       // スプライトのアセットをコピーする
-
+      sprite.costumes.forEach(element => {
+        sprite3.file(element.md5ext, zip.files[element.md5ext].async("blob"), {binary: true});
+      })
+      sprite.sounds.forEach(element => {
+        sprite3.file(element.md5ext, zip.files[element.md5ext].async("blob"), {binary: true});
+      })
       // ダウンロード
-      const sprite3Blob = await sprite3.generateAsync({type: "blob", compression: "DEFLATE"});
+      const sprite3Blob = await sprite3.generateAsync({type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}});
       a.href = URL.createObjectURL(sprite3Blob);
       a.download = `${sprite.name}.sprite3`;
       download.style.display = "block";
